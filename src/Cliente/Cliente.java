@@ -22,15 +22,28 @@ public class Cliente {
 
 		try (Socket socketServer = new Socket(); Scanner sc = new Scanner(System.in)) {
 			socketServer.connect(direccionServer);
+			while (true) {
+				System.out.println("\nMenú:");
+				System.out.print("Ingrese el número de la opción deseada: ");
+				System.out.println("1. Consultar película por ID");
+				System.out.println("2. Consultar película por título");
+				System.out.println("3. Consultar películas por director");
+				System.out.println("4. Agregar película");
+				System.out.println("5. Salir de la aplicación");
+				
+				String opcion = sc.nextLine();
 
-			PrintStream salida = new PrintStream(socketServer.getOutputStream());
-			InputStreamReader entrada = new InputStreamReader(socketServer.getInputStream());
-			BufferedReader bf = new BufferedReader(entrada);
+				PrintStream salida = new PrintStream(socketServer.getOutputStream());
+				if(opcion.equals("5")) {
+					System.out.println("La aplicación se cierra");
+					salida.println("5");
+					System.exit(0);
+				}
+				InputStreamReader entrada = new InputStreamReader(socketServer.getInputStream());
+				BufferedReader bf = new BufferedReader(entrada);
 
-			
-			
-			
-			 socketServer.close();
+				socketServer.close();
+			}
 		} catch (UnknownHostException e) {
 			System.err.println("No se puede conectar al servidor en la dirección " + IP_SERVER);
 			e.printStackTrace();

@@ -21,7 +21,6 @@ public class Servidor {
 				System.out.println("Nuevo cliente conectado.");
 
 				new peliHilo(socketAlCliente).start();
-
 			}
 
 		} catch (Exception e) {
