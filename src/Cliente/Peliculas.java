@@ -4,14 +4,12 @@ public class Peliculas {
 	public int ID;
 	public String titulo;
 	public String director;
-	public String precio;
 
-	public Peliculas(int iD, String titulo, String director, String precio) {
-
+	public Peliculas(int iD, String titulo, String director) {
 		ID = iD;
 		this.titulo = titulo;
 		this.director = director;
-		this.precio = precio;
+
 	}
 
 	public int getID() {
@@ -38,17 +36,11 @@ public class Peliculas {
 		this.director = director;
 	}
 
-	public String getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(String precio) {
-		this.precio = precio;
-	}
-
 	@Override
 	public String toString() {
-		return "Peliculas [ID=" + ID + ", titulo=" + titulo + ", director=" + director + ", precio=" + precio + "]";
+		return "Peliculas [ID=" + ID + ", titulo=" + titulo + ", director=" + director + "]";
 	}
+
+
 
 }
