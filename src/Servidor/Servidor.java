@@ -1,5 +1,7 @@
 package Servidor;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -15,11 +17,11 @@ public class Servidor {
 
 		try (ServerSocket server = new ServerSocket(PUERTO)) {
 			System.out.println("Esperando conexiones en el puerto " + PUERTO);
-
+			
 			while (true) {
 				Socket socketAlCliente = server.accept();
 				System.out.println("Nuevo cliente conectado.");
-
+				
 				new peliHilo(socketAlCliente).start();
 			}
 

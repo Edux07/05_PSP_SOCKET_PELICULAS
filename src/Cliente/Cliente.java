@@ -30,19 +30,39 @@ public class Cliente {
 				System.out.println("3. Consultar peliculas por director");
 				System.out.println("4. Agregar pelicula");
 				System.out.println("5. Salir de la aplicacion");
-				
+
 				String opcion = sc.nextLine();
 
 				PrintStream salida = new PrintStream(socketServer.getOutputStream());
-				if(opcion.equals("5")) {
+				if (opcion.equals("5")) {
 					System.out.println("La aplicación se cierra");
 					salida.println("5");
 					System.exit(0);
 				}
+				if (opcion.equals("1")) {
+					System.out.println("Ha elegido la opcion 1");
+					String op1= " ";
+					salida.println(op1);
+				} else if (opcion.equals("2")) {
+					System.out.println("Ha elegido la opcion 2");
+					String op2= " ";
+					salida.println(op2);
+				} else if (opcion.equals("3")) {
+					System.out.println("Ha elegido la opcion 3");
+					String op3= " ";
+					salida.println(op3);
+				} else if (opcion.equals("4")) {
+					System.out.println("Ha elegido la opcion 4");
+					String op4= " ";
+					salida.println(op4);
+				}
 				InputStreamReader entrada = new InputStreamReader(socketServer.getInputStream());
 				BufferedReader bf = new BufferedReader(entrada);
 
-				socketServer.close();
+				System.out.println("Esperando al resultado del servidor...");
+				String resultado = bf.readLine();
+
+				System.out.println("CLIENTE: El resultado de la operacion es:" + resultado);
 			}
 		} catch (UnknownHostException e) {
 			System.err.println("No se puede conectar al servidor en la dirección " + IP_SERVER);
