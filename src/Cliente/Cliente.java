@@ -16,7 +16,7 @@ public class Cliente {
 	public static final String IP_SERVER = "localhost";
 
 	public static void main(String[] args) throws SocketException {
-		System.out.println("--------hhññ--------");
+		System.out.println("--------Peliculario--------");
 
 		InetSocketAddress direccionServer = new InetSocketAddress(IP_SERVER, PUERTO);
 
