@@ -33,7 +33,7 @@ public class Servidor {
 		pelis.add(new Peliculas(1, "Star Wars III- La venganza de los Sith", "George Lucas"));
 		pelis.add(new Peliculas(2, "Kill Bill", "Quentin Tarantino"));
 		pelis.add(new Peliculas(3, "Star Wars VI- El retorno del Jedi ", "George Lucas"));
-		pelis.add(new Peliculas(4, "Malditos Bastardos", "Quentin Tarantino"));
+		pelis.add(new Peliculas(4, "Tiburon", "Steven Spielberg"));
 		pelis.add(new Peliculas(5, "Interestellar", "Christopher Nolan"));
 	}
 }
