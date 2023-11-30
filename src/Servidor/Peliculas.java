@@ -1,4 +1,4 @@
-package Cliente;
+package Servidor;
 
 public class Peliculas {
 	public int ID;

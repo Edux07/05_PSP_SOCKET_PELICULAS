@@ -12,11 +12,11 @@ import java.util.Scanner;
 
 public class Cliente {
 
-	public static final int PUERTO = 2080;
+	public static final int PUERTO = 2180;
 	public static final String IP_SERVER = "localhost";
 
 	public static void main(String[] args) throws SocketException {
-		System.out.println("-------- Juego de Piedra-Papel-Tijera --------");
+		System.out.println("--------hhññ--------");
 
 		InetSocketAddress direccionServer = new InetSocketAddress(IP_SERVER, PUERTO);
 
