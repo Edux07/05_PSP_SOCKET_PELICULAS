@@ -23,13 +23,13 @@ public class Cliente {
 		try (Socket socketServer = new Socket(); Scanner sc = new Scanner(System.in)) {
 			socketServer.connect(direccionServer);
 			while (true) {
-				System.out.println("\nMenú:");
-				System.out.print("Ingrese el número de la opción deseada: ");
-				System.out.println("1. Consultar película por ID");
-				System.out.println("2. Consultar película por título");
-				System.out.println("3. Consultar películas por director");
-				System.out.println("4. Agregar película");
-				System.out.println("5. Salir de la aplicación");
+				System.out.println("\nMenu:");
+				System.out.println("Ingrese el numero de la opcion deseada: ");
+				System.out.println("1. Consultar pelicula por ID");
+				System.out.println("2. Consultar pelicula por titulo");
+				System.out.println("3. Consultar peliculas por director");
+				System.out.println("4. Agregar pelicula");
+				System.out.println("5. Salir de la aplicacion");
 				
 				String opcion = sc.nextLine();
 

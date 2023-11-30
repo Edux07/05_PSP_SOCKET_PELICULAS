@@ -9,8 +9,10 @@ public class peliHilo extends Thread {
 	public peliHilo(Socket socketAlCliente) {
 		this.socketAlCliente = socketAlCliente;
 	}
-	
 
-
+	@Override
+	public void run() {
+		
+	}
 
 }
