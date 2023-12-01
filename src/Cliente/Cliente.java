@@ -22,47 +22,46 @@ public class Cliente {
 
 		try (Socket socketServer = new Socket(); Scanner sc = new Scanner(System.in)) {
 			socketServer.connect(direccionServer);
+
+			PrintStream salida = new PrintStream(socketServer.getOutputStream());
+
+			InputStreamReader entrada = new InputStreamReader(socketServer.getInputStream());
+			BufferedReader bf = new BufferedReader(entrada);
+
 			while (true) {
-				System.out.println("\nMenu:");
-				System.out.println("Ingrese el numero de la opcion deseada: ");
-				System.out.println("1. Consultar pelicula por ID");
-				System.out.println("2. Consultar pelicula por titulo");
-				System.out.println("3. Consultar peliculas por director");
-				System.out.println("4. Agregar pelicula");
-				System.out.println("5. Salir de la aplicacion");
 
-				String opcion = sc.nextLine();
+				mostrarMenu();
+				int opcion = sc.nextInt();
 
-				PrintStream salida = new PrintStream(socketServer.getOutputStream());
-				if (opcion.equals("5")) {
-					System.out.println("La aplicación se cierra");
-					salida.println("5");
-					System.exit(0);
+				switch (opcion) {
+				case 1: {
+					consultarId(salida, entrada, bf);
+					break;
 				}
-				if (opcion.equals("1")) {
-					System.out.println("Ha elegido la opcion 1");
-					String op1= " ";
-					salida.println(op1);
-				} else if (opcion.equals("2")) {
-					System.out.println("Ha elegido la opcion 2");
-					String op2= " ";
-					salida.println(op2);
-				} else if (opcion.equals("3")) {
-					System.out.println("Ha elegido la opcion 3");
-					String op3= " ";
-					salida.println(op3);
-				} else if (opcion.equals("4")) {
-					System.out.println("Ha elegido la opcion 4");
-					String op4= " ";
-					salida.println(op4);
+
+				case 2: {
+					consultarTitulo(salida, entrada, bf);
+					break;
 				}
-				InputStreamReader entrada = new InputStreamReader(socketServer.getInputStream());
-				BufferedReader bf = new BufferedReader(entrada);
 
-				System.out.println("Esperando al resultado del servidor...");
-				String resultado = bf.readLine();
+				case 3: {
+					consultarDirector(salida, entrada, bf);
+					break;
+				}
 
-				System.out.println("CLIENTE: El resultado de la operacion es:" + resultado);
+				case 4: {
+					agregarPelicula(salida, entrada, bf);
+					break;
+				}
+
+				case 5: {
+					System.out.println("Saliendo de la aplicación.");
+					return;
+				}
+				default:
+					System.out.println("Opción no válida. Inténtalo de nuevo.");
+				}
+
 			}
 		} catch (UnknownHostException e) {
 			System.err.println("No se puede conectar al servidor en la dirección " + IP_SERVER);
@@ -76,4 +75,36 @@ public class Cliente {
 
 		}
 	}
+
+	protected static void mostrarMenu() {
+		System.out.println("\nMenú:");
+		System.out.println("1. Consultar película por ID");
+		System.out.println("2. Consultar película por título");
+		System.out.println("3. Consultar películas por director");
+		System.out.println("4. Agregar película");
+		System.out.println("5. Salir de la aplicación");
+		System.out.print("Ingrese el número de la opción deseada: ");
+
+	}
+
+	private static void agregarPelicula(PrintStream salida, InputStreamReader entrada, BufferedReader bf) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private static void consultarDirector(PrintStream salida, InputStreamReader entrada, BufferedReader bf) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private static void consultarTitulo(PrintStream salida, InputStreamReader entrada, BufferedReader bf) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private static void consultarId(PrintStream salida, InputStreamReader entrada, BufferedReader bf) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

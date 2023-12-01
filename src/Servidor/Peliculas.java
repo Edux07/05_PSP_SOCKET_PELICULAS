@@ -1,6 +1,8 @@
 package Servidor;
 
-public class Peliculas {
+import java.io.Serializable;
+
+public class Peliculas implements Serializable {
 	public int ID;
 	public String titulo;
 	public String director;
@@ -40,7 +42,5 @@ public class Peliculas {
 	public String toString() {
 		return "Peliculas [ID=" + ID + ", titulo=" + titulo + ", director=" + director + "]";
 	}
-
-
 
 }
