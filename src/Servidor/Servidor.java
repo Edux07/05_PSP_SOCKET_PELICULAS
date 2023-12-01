@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Servidor {
 	public static final int PUERTO = 2180;
-	
+
 	protected static List<Peliculas> pelis = new ArrayList<>();
 
 	public static void main(String[] args) {
@@ -41,16 +41,15 @@ public class Servidor {
 		pelis.add(new Peliculas(4, "Tiburon", "Steven Spielberg"));
 		pelis.add(new Peliculas(5, "Interestellar", "Christopher Nolan"));
 	}
-	
-	
+
 	public static class peliHilo extends Thread {
 
 		public Socket socketAlCliente;
 		Scanner sc = new Scanner(System.in);
-		
+
 		public peliHilo(Socket socketAlCliente) {
 			this.socketAlCliente = socketAlCliente;
-		
+
 		}
 
 		@Override
@@ -95,14 +94,15 @@ public class Servidor {
 			oos.close();
 
 		}
-		 private Peliculas buscarID(int id) {
-	         for (Peliculas pelicula : pelis) {
-	             if (pelicula.getID() == id) {
-	                 return pelicula;
-	             }
-	         }
-	         return null;
-	     }
+
+		private Peliculas buscarID(int id) {
+			for (Peliculas pelicula : pelis) {
+				if (pelicula.getID() == id) {
+					return pelicula;
+				}
+			}
+			return null;
+		}
 
 		private void consultarTitulo(ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
 			String titulo = ois.readUTF();
@@ -119,9 +119,8 @@ public class Servidor {
 
 		private void consultarDirector(ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
 			String director = ois.readUTF();
-			List<Peliculas>peli= buscarDirector(director);
-			oos.writeObject(peli);
-			
+			List<Peliculas> pelis = buscarDirector(director);
+			oos.writeObject(pelis);
 
 		}
 
@@ -135,5 +134,5 @@ public class Servidor {
 
 		}
 
-}
+	}
 }
