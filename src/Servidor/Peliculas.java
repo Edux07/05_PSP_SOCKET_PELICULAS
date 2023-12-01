@@ -1,8 +1,6 @@
 package Servidor;
 
-import java.io.Serializable;
-
-public class Peliculas implements Serializable {
+public class Peliculas {
 	public int ID;
 	public String titulo;
 	public String director;
