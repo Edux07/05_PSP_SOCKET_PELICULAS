@@ -141,10 +141,21 @@ public class Cliente {
         String titulo = sc.next();
         System.out.print("Ingrese el director de la nueva película: ");
         String director = sc.next();
+       
+        salida.println(4); // Indicar al servidor que se agregará una nueva película
+        salida.println(id + "," + titulo + "," + director);
+
+        boolean operacionExitosa = Boolean.parseBoolean(bf.readLine());
+        if (operacionExitosa) {
+            System.out.println("Película agregada exitosamente.");
+        } else {
+            System.out.println("Error al agregar la película.");
+        }
     }
+
     private static void salir() {
-	System.exit(0);
-		
-	}
-    
+        System.out.println("Saliendo de la aplicación.");
+    }
 }
+   
+	
