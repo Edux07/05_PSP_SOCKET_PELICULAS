@@ -1,6 +1,9 @@
 package Servidor;
 
-public class Peliculas {
+import java.io.Serializable;
+
+public class Peliculas implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public int ID;
 	public String titulo;
 	public String director;
