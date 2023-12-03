@@ -85,7 +85,7 @@ public class Cliente {
         System.out.print("Ingrese el ID de la película: ");
         int id = sc.nextInt();
 
-        salida.println(1); // Indicar al servidor que se realizará una consulta por ID
+        salida.println(1);
         salida.println(id);
 
         String respuesta = entrada.readLine();
@@ -100,7 +100,7 @@ public class Cliente {
         System.out.print("Ingrese el título de la película: ");
         String titulo = sc.next();
 
-        salida.println(2); // Indicar al servidor que se realizará una consulta por título
+        salida.println(2);
         salida.println(titulo);
 
         String respuesta = entrada.readLine();
@@ -115,7 +115,7 @@ public class Cliente {
         System.out.print("Ingrese el director de la película: ");
         String director = sc.next();
 
-        salida.println(3); // Indicar al servidor que se realizará una consulta por director
+        salida.println(3);
         salida.println(director);
 
         int numPeliculas = Integer.parseInt(entrada.readLine());
@@ -138,7 +138,7 @@ public class Cliente {
         System.out.print("Ingrese el director de la nueva película: ");
         String director = sc.next();
 
-        salida.println(4); // Indicar al servidor que se agregará una nueva película
+        salida.println(4); 
         salida.println(id + "," + titulo + "," + director );
 
         boolean operacionExitosa = Boolean.parseBoolean(entrada.readLine());

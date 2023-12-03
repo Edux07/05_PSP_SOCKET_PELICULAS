@@ -21,7 +21,6 @@ public class Servidor {
                 Socket socketAlCliente = server.accept();
                 System.out.println("Nuevo cliente conectado.");
 
-                // Crear un nuevo hilo para manejar la conexión con el cliente
                 new peliHilo(socketAlCliente, pelis).start();
             }
 
