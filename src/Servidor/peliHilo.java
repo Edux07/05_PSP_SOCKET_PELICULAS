@@ -2,10 +2,11 @@ package Servidor;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class peliHilo extends Thread {
-    public Socket socketAlCliente;
+    private Socket socketAlCliente;
     private List<Peliculas> pelis;
 
     public peliHilo(Socket socketAlCliente, List<Peliculas> pelis) {
@@ -15,41 +16,41 @@ public class peliHilo extends Thread {
 
     @Override
     public void run() {
-        try {
-            ObjectOutputStream oos = new ObjectOutputStream(socketAlCliente.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(socketAlCliente.getInputStream());
+        try (BufferedReader entrada = new BufferedReader(new InputStreamReader(socketAlCliente.getInputStream(), "UTF-8"));
+             PrintWriter salida = new PrintWriter(socketAlCliente.getOutputStream(), true)) {
 
             while (true) {
-                int op = ois.readInt();
+                int op = Integer.parseInt(entrada.readLine());
+
                 switch (op) {
-                    case 1: {
-                        consultarID(oos, ois);
+                    case 1:
+                        consultarID(entrada, salida);
                         break;
-                    }
-                    case 2: {
-                        consultarTitulo(oos, ois);
+                    case 2:
+                        consultarTitulo(entrada, salida);
                         break;
-                    }
-                    case 3: {
-                        consultarDirector(oos, ois);
+                    case 3:
+                        consultarDirector(entrada, salida);
                         break;
-                    }
-                    case 4: {
-                        agregarPeli(oos, ois);
+                    case 4:
+                        agregarPeli(entrada, salida);
                         break;
-                    }
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void consultarID(ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
-        int id = ois.readInt();
+    private void consultarID(BufferedReader entrada, PrintWriter salida) throws IOException {
+        int id = Integer.parseInt(entrada.readLine());
         Peliculas peli = buscarID(id);
-        oos.writeObject(peli);
-        oos.flush();
+
+        if (peli != null) {
+            salida.println(peli.getID() + "," + peli.getTitulo() + "," + peli.getDirector());
+        } else {
+            salida.println(""); // Enviar cadena vacía si la película no se encuentra
+        }
     }
 
     private Peliculas buscarID(int id) {
@@ -61,11 +62,15 @@ public class peliHilo extends Thread {
         return null;
     }
 
-    private void consultarTitulo(ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
-        String titulo = ois.readUTF();
+    private void consultarTitulo(BufferedReader entrada, PrintWriter salida) throws IOException {
+        String titulo = entrada.readLine();
         Peliculas pelicula = buscarPeliculaPorTitulo(titulo);
-        oos.writeObject(pelicula);
-        oos.flush();
+
+        if (pelicula != null) {
+            salida.println(pelicula.getID() + "," + pelicula.getTitulo() + "," + pelicula.getDirector() );
+        } else {
+            salida.println(""); // Enviar cadena vacía si la película no se encuentra
+        }
     }
 
     private Peliculas buscarPeliculaPorTitulo(String titulo) {
@@ -77,41 +82,50 @@ public class peliHilo extends Thread {
         return null;
     }
 
-    private void consultarDirector(ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
-        String director = ois.readUTF();
-        List<Peliculas> peliculas = buscarDirector(director);
-        oos.writeInt(peliculas.size());
-        oos.flush();
-        for (Peliculas pelicula : peliculas) {
-            oos.writeObject(pelicula);
-            oos.flush();
+    private void consultarDirector(BufferedReader entrada, PrintWriter salida) throws IOException {
+        String director = entrada.readLine();
+        List<Peliculas> pelisDirector = buscarDirector(director);
+
+        salida.println(pelisDirector.size());
+
+        for (Peliculas pelicula : pelisDirector) {
+            salida.println(pelicula.getID() + "," + pelicula.getTitulo() + "," + pelicula.getDirector());
         }
     }
 
     private List<Peliculas> buscarDirector(String director) {
-        List<Peliculas> peliculasEncontradas = new ArrayList<>();
+        List<Peliculas> pelisDirector = new ArrayList<>();
+
         for (Peliculas pelicula : pelis) {
             if (pelicula.getDirector().equalsIgnoreCase(director)) {
-                peliculasEncontradas.add(pelicula);
+                pelisDirector.add(pelicula);
             }
         }
-        return peliculasEncontradas;
+        return pelisDirector;
     }
 
-    private void agregarPeli(ObjectOutputStream oos, ObjectInputStream ois) {
-        try {
-            Peliculas nuevaPelicula = (Peliculas) ois.readObject();
-            boolean operacionExitosa = agregarPeliculaALaLista(nuevaPelicula);
-            oos.writeBoolean(operacionExitosa);
-            oos.flush();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    private void agregarPeli(BufferedReader entrada, PrintWriter salida) throws IOException {
+    	 try {
+    	        // Leer datos de la nueva película desde el cliente
+    	        int id = Integer.parseInt(entrada.readLine());
+    	        String titulo = entrada.readLine();
+    	        String director = entrada.readLine();
+    	        double precio = Double.parseDouble(entrada.readLine());
 
-    private boolean agregarPeliculaALaLista(Peliculas nuevaPelicula) {
-        synchronized (pelis) {
-            return pelis.add(nuevaPelicula);
-        }
+    	        // Crear una nueva instancia de Peliculas con los datos proporcionados
+    	        Peliculas nuevaPelicula = new Peliculas(id, titulo, director);
+
+    	        // Verificar si la película ya existe en la lista
+    	        if (!pelis.contains(nuevaPelicula)) {
+    	            // Agregar la nueva película a la lista
+    	            pelis.add(nuevaPelicula);
+    	            salida.println("La película se agregó correctamente.");
+    	        } else {
+    	            salida.println("La película ya existe en la biblioteca.");
+    	        }
+    	    } catch (NumberFormatException e) {
+    	        salida.println("Error al procesar los datos. Asegúrate de ingresar valores válidos.");
+    	    }
     }
 }
+

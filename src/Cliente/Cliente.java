@@ -3,7 +3,7 @@ package Cliente;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
@@ -23,10 +23,8 @@ public class Cliente {
         try (Socket socketServer = new Socket(); Scanner sc = new Scanner(System.in)) {
             socketServer.connect(direccionServer);
 
-            PrintStream salida = new PrintStream(socketServer.getOutputStream(), true, "UTF-8");
-
-            InputStreamReader entrada = new InputStreamReader(socketServer.getInputStream(), "UTF-8");
-            BufferedReader bf = new BufferedReader(entrada);
+            PrintWriter salida = new PrintWriter(socketServer.getOutputStream(), true);
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(socketServer.getInputStream(), "UTF-8"));
 
             while (true) {
                 mostrarMenu();
@@ -34,22 +32,22 @@ public class Cliente {
 
                 switch (opcion) {
                     case 1: {
-                        consultarId(salida, bf);
+                        consultarId(salida, entrada, sc);
                         break;
                     }
 
                     case 2: {
-                        consultarTitulo(salida, bf);
+                        consultarTitulo(salida, entrada, sc);
                         break;
                     }
 
                     case 3: {
-                        consultarDirector(salida, bf);
+                        consultarDirector(salida, entrada, sc);
                         break;
                     }
 
                     case 4: {
-                        agregarPelicula(salida, bf, sc);
+                        agregarPelicula(salida, entrada, sc);
                         break;
                     }
 
@@ -73,26 +71,24 @@ public class Cliente {
         }
     }
 
-   
-
-	protected static void mostrarMenu() {
-        System.out.println("\nMenú:");
-        System.out.println("1. Consultar película por ID");
-        System.out.println("2. Consultar película por título");
-        System.out.println("3. Consultar películas por director");
-        System.out.println("4. Agregar película");
-        System.out.println("5. Salir de la aplicación");
-        System.out.print("Ingrese el número de la opción deseada: ");
+    protected static void mostrarMenu() {
+        System.out.println("\nMenu de peliculas:");
+        System.out.println("1. Consultar pelicula por ID");
+        System.out.println("2. Consultar pelicula por titulo");
+        System.out.println("3. Consultar peliculas por director");
+        System.out.println("4. Agregar pelicula");
+        System.out.println("5. Salir de la aplicacion");
+        System.out.print("Ingrese el numero de la opcion deseada: ");
     }
 
-    private static void consultarId(PrintStream salida, BufferedReader bf) throws IOException {
+    private static void consultarId(PrintWriter salida, BufferedReader entrada, Scanner sc) throws IOException {
         System.out.print("Ingrese el ID de la película: ");
-        int id = new Scanner(System.in).nextInt();
+        int id = sc.nextInt();
 
         salida.println(1); // Indicar al servidor que se realizará una consulta por ID
         salida.println(id);
 
-        String respuesta = bf.readLine();
+        String respuesta = entrada.readLine();
         if (!respuesta.isEmpty()) {
             System.out.println("Película encontrada:\n" + respuesta);
         } else {
@@ -100,14 +96,14 @@ public class Cliente {
         }
     }
 
-    private static void consultarTitulo(PrintStream salida, BufferedReader bf) throws IOException {
+    private static void consultarTitulo(PrintWriter salida, BufferedReader entrada, Scanner sc) throws IOException {
         System.out.print("Ingrese el título de la película: ");
-        String titulo = new Scanner(System.in).nextLine();
+        String titulo = sc.next();
 
         salida.println(2); // Indicar al servidor que se realizará una consulta por título
         salida.println(titulo);
 
-        String respuesta = bf.readLine();
+        String respuesta = entrada.readLine();
         if (!respuesta.isEmpty()) {
             System.out.println("Película encontrada:\n" + respuesta);
         } else {
@@ -115,18 +111,18 @@ public class Cliente {
         }
     }
 
-    private static void consultarDirector(PrintStream salida, BufferedReader bf) throws IOException {
+    private static void consultarDirector(PrintWriter salida, BufferedReader entrada, Scanner sc) throws IOException {
         System.out.print("Ingrese el director de la película: ");
-        String director = new Scanner(System.in).nextLine();
+        String director = sc.next();
 
         salida.println(3); // Indicar al servidor que se realizará una consulta por director
         salida.println(director);
 
-        int numPeliculas = Integer.parseInt(bf.readLine());
+        int numPeliculas = Integer.parseInt(entrada.readLine());
         if (numPeliculas > 0) {
             System.out.println("Películas encontradas por el director " + director + ":");
             for (int i = 0; i < numPeliculas; i++) {
-                String pelicula = bf.readLine();
+                String pelicula = entrada.readLine();
                 System.out.println(pelicula);
             }
         } else {
@@ -134,18 +130,18 @@ public class Cliente {
         }
     }
 
-    private static void agregarPelicula(PrintStream salida, BufferedReader bf, Scanner sc) throws IOException {
+    private static void agregarPelicula(PrintWriter salida, BufferedReader entrada, Scanner sc) throws IOException {
         System.out.print("Ingrese el ID de la nueva película: ");
         int id = sc.nextInt();
         System.out.print("Ingrese el título de la nueva película: ");
         String titulo = sc.next();
         System.out.print("Ingrese el director de la nueva película: ");
         String director = sc.next();
-       
-        salida.println(4); // Indicar al servidor que se agregará una nueva película
-        salida.println(id + "," + titulo + "," + director);
 
-        boolean operacionExitosa = Boolean.parseBoolean(bf.readLine());
+        salida.println(4); // Indicar al servidor que se agregará una nueva película
+        salida.println(id + "," + titulo + "," + director );
+
+        boolean operacionExitosa = Boolean.parseBoolean(entrada.readLine());
         if (operacionExitosa) {
             System.out.println("Película agregada exitosamente.");
         } else {
@@ -157,5 +153,3 @@ public class Cliente {
         System.out.println("Saliendo de la aplicación.");
     }
 }
-   
-	
